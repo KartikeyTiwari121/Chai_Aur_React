@@ -36,7 +36,7 @@ function App() {
       <h1>Hey!</h1>
       <h2>Counter value: {counter}</h2>
 
-      {/*IT'll Show a message if counter is greater than or equal to 20  and below code is evaluated expression, it'll evalute the code and when it's true it'll show a message*/}
+      {/*IT'll Show a message if counter is greater than or equal to 20  and below given code is evaluated expression, it'll evalute the code and when it's true it'll show a message*/}
       {counter >= 20 && <p>Counter can't go up!</p>}
 
        {/* It'll Show a message if counter is less than or equal to 0  */}
