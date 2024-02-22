@@ -1,6 +1,9 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+
 export default function Footer() {
+    const location = useLocation();
+
     return (
         <footer className="bg-white border-y">
             <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
@@ -19,12 +22,12 @@ export default function Footer() {
                             <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase">Resources</h2>
                             <ul className="text-gray-500 font-medium">
                                 <li className="mb-4">
-                                    <Link to="/" className="hover:underline">
+                                    <Link to="/" className={`hover:underline ${location.pathname === '/' ? 'text-orange-700' : 'text-gray-700'}`}>
                                         Home
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to="/about" className="hover:underline">
+                                    <Link to="/about" className={`hover:underline ${location.pathname === '/about' ? 'text-orange-700' : 'text-gray-700'}`}>
                                         About
                                     </Link>
                                 </li>
@@ -35,7 +38,7 @@ export default function Footer() {
                             <ul className="text-gray-500 font-medium">
                                 <li className="mb-4">
                                     <a
-                                        href="https://github.com/hiteshchoudhary"
+                                        href="https://github.com/KartikeyTiwari121"
                                         className="hover:underline"
                                         target="_blank"
                                         rel="noreferrer"
@@ -70,9 +73,9 @@ export default function Footer() {
                 <hr className="my-6 border-gray-200 sm:mx-auto lg:my-8" />
                 <div className="sm:flex sm:items-center sm:justify-between">
                     <span className="text-sm text-gray-500 sm:text-center">
-                        © 2023
-                        <a href="https://hiteshchoudhary.com/" className="hover:underline">
-                            hiteshchoudhary
+                        © 2023 
+                        <a href="#" className="hover:underline">
+                            kartikeytiwari
                         </a>
                         . All Rights Reserved.
                     </span>
