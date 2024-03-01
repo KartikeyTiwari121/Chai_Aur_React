@@ -1,21 +1,36 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {useDispatch, useSelector } from 'react-redux'
-import { removeTodo } from '../features/todo/todoSlice'
+import { removeTodo, toggleComplete, updateTodo } from '../features/todo/todoSlice'
 
 export default function Todo() {
+    const [isTodoEditable, useIsTodoEditable] = useState(false)
+    // const [todoMsg, setTodoMsg] = useState(todo.todo)
     const todos = useSelector(state => state.todos)
+
     const dispatch = useDispatch()
+
+    const checkHandle = (idOfList)=>{
+      dispatch(toggleComplete(idOfList))
+    }
 
     return (
         <>
         <div>Todos</div>
-        <ul className="list-none">
+        <ul className="list-none ">
             {todos.map((todo) => (
               <li
-                className="mt-4 flex justify-between items-center bg-zinc-800 px-4 py-2 rounded"
+                className={`mt-4 flex justify-between items-center bg-zinc-800 px-4 py-2 rounded ${todo.completed ? "bg-zinc-400" : ""}`}
                 key={todo.id}
               >
-                <div className='text-white'>{todo.text}</div>
+
+               <input
+                  type="checkbox"
+                  className={`cursor-pointer`}
+                  checked={todo.completed}
+                  onChange={()=> checkHandle(todo.id)}
+               />
+
+                <div className={`text-white  ${todo.completed ? "line-through" : ""}`}>{todo.text}</div>
                 <button
                 //  /* use used callback to prevent imidiate execution of dispatch as we have to pass args in dispatch & for that  have to write () */
                  onClick={() => dispatch(removeTodo(todo.id))}
