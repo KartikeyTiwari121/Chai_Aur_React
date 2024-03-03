@@ -31,6 +31,7 @@ export default function AddTodo({editFormVisibility, editTodo, CancelEdit}) {
           dispatch(updateTodo({selectedId, editInput}))
         setEditInput('')
         }
+        CancelEdit(); 
     }
     
     return (
