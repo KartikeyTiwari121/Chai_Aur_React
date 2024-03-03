@@ -1,7 +1,7 @@
 import { createSlice, nanoid } from "@reduxjs/toolkit";
 // 2nd step is to make reducers also caleed slices. reducers are just functionality
 const initialState = {
-    todos: [{id: 1, text: "Hello world", completed: false}]
+    todos: [{id: 1, text: "Hello world", completed: false,  isTodoEditable: false}]
 }
 
 // we use createSlices to make reducers. name property is given by createSlice defaultly in which we can assign a string. Every Slice must has initialState, after that we defines reducers which can contain properties & functions.
@@ -17,7 +17,9 @@ export const todoSlice = createSlice({
         addTodo: (state, action) => {
             const todo = {
                 id: nanoid(),
-                text: action.payload
+                text: action.payload,
+                completed: false,
+                isTodoEditable: false
                 // payload is object in which there can be many prperties such as id, text, completed etc.
             }
             state.todos.push(todo);
@@ -28,17 +30,26 @@ export const todoSlice = createSlice({
                 //no need to write .id, it'll automatically compare
             })
         },
-        updateTodo: (id, todo) => {
-            setTodos((prevTodoList)=> prevTodoList.map((currentTodoFromList)=> (currentTodoFromList.id === id ? todo: currentTodoFromList)));
+        updateTodo: (state, action) => {
+            const {selectedId, editInput} = action.payload;
+            const index = state.todos.findIndex((todo) => todo.id === selectedId);
+            state.todos[index].text = editInput;
           }, 
         toggleComplete: (state, action) => {
             state.todos = state.todos.map((currentTodoFromList)=> currentTodoFromList.id === action.payload ? {...currentTodoFromList, completed: !currentTodoFromList.completed}: currentTodoFromList)
       }
+
+    //   ,
+    //   isTodoEditableChanging: (state, action) =>{
+    //         const index = state.todos.findIndex((todo) => todo.id === action.payload);
+    //         state.todos[index].isTodoEditable = !state.todos[index].isTodoEditable
+    //         console.log(state.todos[index].isTodoEditable);
+    //   }
     }
 })
 
 //have to export all methods individually to use in components.
-export const {addTodo, removeTodo, toggleComplete, updateTodo} = todoSlice.actions
+export const {addTodo, removeTodo, toggleComplete, updateTodo, isTodoEditableChanging} = todoSlice.actions
 //we have to give info about recducers to store as store is restricted as it not work with all reducers it only works with reducers which is registered with it. 
 export default todoSlice.reducer
 

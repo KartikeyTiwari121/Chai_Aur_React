@@ -1,13 +1,21 @@
 import React, {useState} from 'react'
 import {useDispatch, useSelector } from 'react-redux'
-import { removeTodo, toggleComplete, updateTodo } from '../features/todo/todoSlice'
+import { removeTodo, toggleComplete, updateTodo, isTodoEditableChanging } from '../features/todo/todoSlice'
 
-export default function Todo() {
-    const [isTodoEditable, useIsTodoEditable] = useState(false)
-    // const [todoMsg, setTodoMsg] = useState(todo.todo)
+export default function TodoItem({handleEditClick, editFormVisibility}) {
+
     const todos = useSelector(state => state.todos)
 
     const dispatch = useDispatch()
+
+    // const editItem = (id) => {
+    //   const newEditItem = todos.find((item)=>{
+    //     return item.id === id
+    //   })
+    //   dispatch(isTodoEditableChanging(newEditItem.id))
+
+    //   console.log(newEditItem.id);
+    // }
 
     const checkHandle = (idOfList)=>{
       dispatch(toggleComplete(idOfList))
@@ -19,18 +27,39 @@ export default function Todo() {
         <ul className="list-none ">
             {todos.map((todo) => (
               <li
-                className={`mt-4 flex justify-between items-center bg-zinc-800 px-4 py-2 rounded ${todo.completed ? "bg-zinc-400" : ""}`}
+                className={`mt-4 flex justify-between items-center bg-zinc-800 px-4 py-2 rounded ${todo.completed ? "bg-gray-700" : ""}`}
                 key={todo.id}
               >
 
-               <input
-                  type="checkbox"
-                  className={`cursor-pointer`}
-                  checked={todo.completed}
-                  onChange={()=> checkHandle(todo.id)}
-               />
+                {/* used condtiontional reder so that if we are updating the todo, check & remove will disappear */}
+               {editFormVisibility===false&&(
+                <input
+                type="checkbox"
+                className={`cursor-pointer`}
+                checked={todo.completed}
+                onChange={()=> checkHandle(todo.id)}
+             />
+               )}
 
                 <div className={`text-white  ${todo.completed ? "line-through" : ""}`}>{todo.text}</div>
+
+
+               {/* this parent div for buttons */}
+
+                <div className='flex justify-between items-center'>
+
+                {editFormVisibility===false&&(
+                <button
+                className="inline-flex w-20 h-8 mr-2 rounded-lg text-sm border border-black/10 justify-center items-center bg-gray-50 hover:bg-gray-100 shrink-0 disabled:opacity-50"
+                onClick={() => handleEditClick(todo)}
+                disabled={todo.completed}>
+                ✏️Edit
+                </button>
+
+                )}
+                
+                
+                {editFormVisibility===false&&(
                 <button
                 //  /* use used callback to prevent imidiate execution of dispatch as we have to pass args in dispatch & for that  have to write () */
                  onClick={() => dispatch(removeTodo(todo.id))}
@@ -51,6 +80,9 @@ export default function Todo() {
                     />
                   </svg>
                 </button>
+                )}
+                
+                </div>
               </li>
             ))}
           </ul>
